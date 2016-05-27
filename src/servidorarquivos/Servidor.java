@@ -6,6 +6,8 @@
 package servidorarquivos;
 
 import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
@@ -30,6 +32,12 @@ public class Servidor {
             servidor = new ServerSocket(12345);
             while (true) {
                 Socket cliente = servidor.accept();
+                dados = new DataInputStream(cliente.getInputStream());
+                System.out.println("Criando o arquivo: " + dados.readUTF());
+                File f = new File(dados.readUTF());
+                dados.close();
+                cliente.close();
+                cliente = servidor.accept();
                 dados = new DataInputStream(cliente.getInputStream());
                 System.out.println(dados.readUTF());
             }
