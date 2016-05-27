@@ -19,8 +19,12 @@ public class Servidor {
     ServerSocket servidor;
 
     public Servidor() {
+
+    }
+
+    public static void main(String[] args) {
         try {
-            servidor = new ServerSocket(12345);
+            ServerSocket serverSocket = new ServerSocket(12345);
         } catch (IOException ex) {
             Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
         }
