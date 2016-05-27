@@ -29,10 +29,7 @@ public class Cliente {
             dados = new DataOutputStream(s_cliente.getOutputStream());
             dados.writeUTF(filename);
             Thread.sleep(1000);
-
-            dados.close();
-            s_cliente.close();
-
+            
             s_cliente = new Socket("192.168.0.3", 12345);
             dados = new DataOutputStream(s_cliente.getOutputStream());
             FileInputStream fileStream = new FileInputStream(filename);
