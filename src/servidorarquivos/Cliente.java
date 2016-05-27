@@ -6,8 +6,13 @@
 package servidorarquivos;
 
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,15 +21,23 @@ import java.net.Socket;
 public class Cliente {
 
     public static void main(String[] args) {
-        Socket s_cliente;
-        DataOutputStream dados;
         try {
+            Socket s_cliente;
+            DataOutputStream dados;
             s_cliente = new Socket("192.168.0.3", 12345);
             dados = new DataOutputStream(s_cliente.getOutputStream());
-            dados.writeUTF("Hey, to aqui!");
+            FileInputStream file = new FileInputStream("arquivoParaTransferencia");
+            File f = new File("arquivoParaTransferencia");
+            int length = (int) f.length();
+            byte[] buffer = new byte[length];
+            int nBytes;
+            while ((nBytes = file.read(buffer)) != -1) {
+                String msgDecode = new String(buffer, "UTF-8");
+                dados.writeUTF(msgDecode);
+            }
         } catch (IOException ex) {
-            System.err.println("E agora jose?");
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
 
+    }
 }
