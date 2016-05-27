@@ -5,6 +5,7 @@
  */
 package servidorarquivos;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
@@ -16,16 +17,14 @@ public class Cliente {
 
     public static void main(String[] args) {
         Socket s_cliente;
+        DataOutputStream dados;
         try {
-            s_cliente = new Socket("192.168.0.3", 12348);
-            System.out.println("Conexion OK");
+            s_cliente = new Socket("192.168.0.3", 12345);
+            dados = new DataOutputStream(s_cliente.getOutputStream());
+            dados.writeUTF("Hey, to aqui!");
         } catch (IOException ex) {
             System.err.println("E agora jose?");
         }
-    }
-
-    public Cliente() {
-
     }
 
 }
