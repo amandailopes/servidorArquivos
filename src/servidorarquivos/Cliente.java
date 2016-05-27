@@ -19,7 +19,7 @@ public class Cliente {
 
     public Cliente() {
         try {
-            this.s_cliente = new Socket("127.0.0.1", 12345);
+            this.s_cliente = new Socket("192.168.0.3", 12345);
             System.out.println("Conexion OK");
         } catch (IOException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
