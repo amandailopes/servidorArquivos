@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  */
 public class Cliente {
 
-    String IP = "192.168.0.4";
+    String IP = "192.168.0.7";
     int porta = 12345;
 
     public void enviarInfo(String codigo, String... d) {
@@ -58,23 +58,28 @@ public class Cliente {
             String d[] = new String[3];
             d[0] = descricao;
             d[1] = palavraChave;
-            FileInputStream fileStream;
-            fileStream = new FileInputStream(f.getName());
-            int length = (int) f.length();
+            enviarInfo("2", d);
+
+            Socket s_cliente = new Socket("192.168.0.4", 12345);
+            DataOutputStream dados = new DataOutputStream(s_cliente.getOutputStream());
+            FileInputStream fileStream = new FileInputStream(f.getName());
+            File file = new File(f.getName());
+            int length = (int) file.length();
             byte[] buffer = new byte[length];
             int nBytes;
-            d[3] = "";
             while ((nBytes = fileStream.read(buffer)) != -1) {
-                d[3] += new String(buffer, "UTF-8");
+                String msgDecode = new String(buffer, "UTF-8");
+                dados.writeUTF(msgDecode);
             }
-            enviarInfo("2", d);
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
 
-    }
+        }
+
+    
+
+    
 
     public static void main(String[] args) throws InterruptedException, IOException {
 //        try {
@@ -103,6 +108,6 @@ public class Cliente {
         Cliente c = new Cliente();
         c.novoLogin("Kennedy", "kenreurison", "minhaSenha");
         c.login("kenreurison", "minhaSenha");
-        //c.enviarArquivo("Um arquivo pra recordar", "uapr", new File("arquivoParaTransferencia"));
+        c.enviarArquivo("Um arquivo pra recordar", "uapr", new File("arquivoParaTransferencia"));
     }
 }

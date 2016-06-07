@@ -26,7 +26,7 @@ public class Servidor {
         String Senha = split[2];
         for (usuario u : usuarios) {
             if (u.login.equals(login) && u.senha.equals(Senha)) {
-                System.out.println(login + "conectado!");
+                System.out.println(login + " conectado!");
             }
         }
     }
@@ -70,9 +70,9 @@ public class Servidor {
 
     private void cadastrarUsuario(String readUTF) {
         String[] split = readUTF.split(";");
-        String nome = split[0];
-        String login = split[1];
-        String Senha = split[2];
+        String nome = split[1];
+        String login = split[2];
+        String Senha = split[3];
         usuario u = new usuario(nome, login, Senha);
         usuarios.add(u);
         System.out.println(u + " cadastrado!");
