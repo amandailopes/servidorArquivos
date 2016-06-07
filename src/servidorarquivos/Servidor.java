@@ -6,15 +6,10 @@
 package servidorarquivos;
 
 import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -41,9 +36,6 @@ public class Servidor {
         DataInputStream dados;
         servidor = new ServerSocket(12345);
 
-        usuario padrao = new usuario("Kennedy", "Senha");
-        usuarios.add(padrao);
-
         while (true) {
             Socket cliente = servidor.accept();
             dados = new DataInputStream(cliente.getInputStream());
@@ -54,6 +46,12 @@ public class Servidor {
                 case 1:
                     receberLogin(readUTF);
                     break;
+                case 2:
+                    receberArquivo(readUTF);
+                    break;
+                case 3:
+                    cadastrarUsuario(readUTF);
+                    break;
             }
         }
     }
@@ -62,14 +60,28 @@ public class Servidor {
         Servidor s = new Servidor();
     }
 
+    private void receberArquivo(String readUTF) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void cadastrarUsuario(String readUTF) {
+        String[] split = readUTF.split(";");
+        String nome = split[0];
+        String login = split[1];
+        String Senha = split[2];
+        usuarios.add(new usuario(nome, login, Senha));
+    }
+
     class usuario {
 
         protected String login;
         protected String senha;
+        protected String nome;
 
-        public usuario(String login, String senha) {
+        public usuario(String nome, String login, String senha) {
             this.login = login;
             this.senha = senha;
+            this.nome = nome;
         }
 
     }

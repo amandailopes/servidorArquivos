@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 public class Cliente {
 
-    String IP = "192.168.0.4";
+    String IP = "192.168.0.7";
     int porta = 12345;
 
     public void enviarInfo(String codigo, String... d) {
@@ -28,7 +28,7 @@ public class Cliente {
             for (int i = 0; i < d.length; i++) {
                 info += ";" + d[i];
             }
-            info += "\n";
+            info += ";\n";
             Socket s_client = new Socket(IP, porta);
             DataOutputStream dados = new DataOutputStream(s_client.getOutputStream());
             dados.writeUTF(info);
@@ -37,17 +37,18 @@ public class Cliente {
         }
     }
 
-    public void novoLogin(String login, String Password) {
-        String d[] = new String[2];
-        d[0] = login;
-        d[1] = Password;
-        enviarInfo("2", d);
-    }
-
     public void login(String login, String Password) {
         String d[] = new String[2];
         d[0] = login;
         d[1] = Password;
+        enviarInfo("3", d);
+    }
+
+    public void novoLogin(String nome, String login, String Password) {
+        String d[] = new String[3];
+        d[0] = nome;
+        d[1] = login;
+        d[2] = Password;
         enviarInfo("1", d);
     }
 
@@ -98,7 +99,8 @@ public class Cliente {
 //            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
 //        }
         Cliente c = new Cliente();
-        //c.login("Kennedy", "Senha");
+        c.novoLogin("Kennedy", "kenreurison", "minhaSenha");
+        c.login("kenreurison", "minhaSenha");
         c.enviarArquivo("Um arquivo pra recordar", "uapr", new File("arquivoParaTransferencia"));
     }
 }
