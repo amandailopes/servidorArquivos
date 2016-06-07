@@ -62,9 +62,9 @@ public class Servidor {
 
     private void receberArquivo(String readUTF) {
         String[] split = readUTF.split(";");
-        String descricao = split[0];
-        String palavraChave = split[1];
-        String arquivo = split[2];
+        String descricao = split[1];
+        String palavraChave = split[2];
+        String arquivo = split[3];
         System.out.println(descricao + palavraChave + arquivo);
     }
 
@@ -73,7 +73,9 @@ public class Servidor {
         String nome = split[0];
         String login = split[1];
         String Senha = split[2];
-        usuarios.add(new usuario(nome, login, Senha));
+        usuario u = new usuario(nome, login, Senha);
+        usuarios.add(u);
+        System.out.println(u + " cadastrado!");
     }
 
     class usuario {
@@ -87,6 +89,12 @@ public class Servidor {
             this.senha = senha;
             this.nome = nome;
         }
+
+        @Override
+        public String toString() {
+            return "usuario{" + "login=" + login + ", senha=" + senha + ", nome=" + nome + '}';
+        }
+        
 
     }
 }
