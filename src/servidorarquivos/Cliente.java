@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  */
 public class Cliente {
 
-    String IP = "192.168.0.7";
+    String IP = "192.168.0.4";
     int porta = 12345;
 
     public void enviarInfo(String codigo, String... d) {
@@ -63,8 +63,9 @@ public class Cliente {
             int length = (int) f.length();
             byte[] buffer = new byte[length];
             int nBytes;
+            d[3] = "";
             while ((nBytes = fileStream.read(buffer)) != -1) {
-                d[3] = new String(buffer, "UTF-8");
+                d[3] += new String(buffer, "UTF-8");
             }
             enviarInfo("2", d);
         } catch (FileNotFoundException ex) {
@@ -102,6 +103,6 @@ public class Cliente {
         Cliente c = new Cliente();
         c.novoLogin("Kennedy", "kenreurison", "minhaSenha");
         c.login("kenreurison", "minhaSenha");
-        c.enviarArquivo("Um arquivo pra recordar", "uapr", new File("arquivoParaTransferencia"));
+        //c.enviarArquivo("Um arquivo pra recordar", "uapr", new File("arquivoParaTransferencia"));
     }
 }
