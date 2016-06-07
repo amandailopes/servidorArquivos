@@ -61,7 +61,11 @@ public class Servidor {
     }
 
     private void receberArquivo(String readUTF) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String[] split = readUTF.split(";");
+        String descricao = split[0];
+        String palavraChave = split[1];
+        String arquivo = split[2];
+        System.out.println(descricao + palavraChave + arquivo);
     }
 
     private void cadastrarUsuario(String readUTF) {

@@ -8,6 +8,7 @@ package servidorarquivos;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -28,7 +29,7 @@ public class Cliente {
             for (int i = 0; i < d.length; i++) {
                 info += ";" + d[i];
             }
-            info += ";\n";
+            info += ";";
             Socket s_client = new Socket(IP, porta);
             DataOutputStream dados = new DataOutputStream(s_client.getOutputStream());
             dados.writeUTF(info);
@@ -54,24 +55,24 @@ public class Cliente {
 
     public void enviarArquivo(String descricao, String palavraChave, File f) {
         try {
-            String d[] = new String[2];
+            String d[] = new String[3];
             d[0] = descricao;
             d[1] = palavraChave;
-            enviarInfo("2", d);
-
-            Socket s_cliente = new Socket(IP, porta);
-            DataOutputStream dados = new DataOutputStream(s_cliente.getOutputStream());
-            FileInputStream fileStream = new FileInputStream(f.getName());
+            FileInputStream fileStream;
+            fileStream = new FileInputStream(f.getName());
             int length = (int) f.length();
             byte[] buffer = new byte[length];
             int nBytes;
             while ((nBytes = fileStream.read(buffer)) != -1) {
-                String msgDecode = new String(buffer, "UTF-8");
-                dados.writeUTF(msgDecode);
+                d[3] = new String(buffer, "UTF-8");
             }
+            enviarInfo("2", d);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 
     public static void main(String[] args) throws InterruptedException, IOException {
