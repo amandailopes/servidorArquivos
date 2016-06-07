@@ -42,7 +42,7 @@ public class Cliente {
         String d[] = new String[2];
         d[0] = login;
         d[1] = Password;
-        enviarInfo("3", d);
+        enviarInfo("1", d);
     }
 
     public void novoLogin(String nome, String login, String Password) {
@@ -50,7 +50,7 @@ public class Cliente {
         d[0] = nome;
         d[1] = login;
         d[2] = Password;
-        enviarInfo("1", d);
+        enviarInfo("3", d);
     }
 
     public void enviarArquivo(String descricao, String palavraChave, File f) {
