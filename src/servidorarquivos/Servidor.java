@@ -33,12 +33,9 @@ public class Servidor {
             while (true) {
                 Socket cliente = servidor.accept();
                 dados = new DataInputStream(cliente.getInputStream());
-                System.out.println("Criando o arquivo: " + dados.readUTF());
-                File f = new File(dados.readUTF());
-                dados.close();
-                cliente.close();
-                cliente = servidor.accept();
-                dados = new DataInputStream(cliente.getInputStream());
+                //System.out.println("Criando o arquivo: " + dados.readUTF());
+                //File f = new File(dados.readUTF());
+                //cliente = servidor.accept();
                 System.out.println(dados.readUTF());
             }
         } catch (IOException ex) {
