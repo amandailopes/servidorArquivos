@@ -8,7 +8,6 @@ package servidorarquivos;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.logging.Level;
@@ -20,21 +19,41 @@ import java.util.logging.Logger;
  */
 public class Cliente {
 
-    public static void main(String[] args) throws InterruptedException {
+    String IP = "192.168.0.4";
+    int porta = 12345;
+
+    public void enviarInfo(String codigo, String... d) {
         try {
-            Socket s_cliente;
-            DataOutputStream dados;
-            String filename = "arquivoParaTransferencia";
-            s_cliente = new Socket("192.168.0.3", 12345);
-            dados = new DataOutputStream(s_cliente.getOutputStream());
-            dados.writeUTF(filename);
-            Thread.sleep(1000);
-            
-            s_cliente = new Socket("192.168.0.3", 12345);
-            dados = new DataOutputStream(s_cliente.getOutputStream());
-            FileInputStream fileStream = new FileInputStream(filename);
-            File file = new File(filename);
-            int length = (int) file.length();
+            String info = codigo;
+            for (int i = 0; i < d.length; i++) {
+                info += ";" + d[i];
+            }
+            info += "\n";
+            Socket s_client = new Socket(IP, porta);
+            DataOutputStream dados = new DataOutputStream(s_client.getOutputStream());
+            dados.writeUTF(info);
+        } catch (IOException ex) {
+            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void login(String login, String Password) {
+        String d[] = new String[2];
+        d[0] = login;
+        d[1] = Password;
+        enviarInfo("1", d);
+    }
+
+    public void enviarArquivo(String descricao, String palavraChave, File f) {
+        try {
+            String d[] = new String[2];
+            d[0] = descricao;
+            d[1] = palavraChave;
+            enviarInfo("2", d);
+            Socket s_cliente = new Socket(IP, porta);
+            DataOutputStream dados = new DataOutputStream(s_cliente.getOutputStream());
+            FileInputStream fileStream = new FileInputStream(f.getName());
+            int length = (int) f.length();
             byte[] buffer = new byte[length];
             int nBytes;
             while ((nBytes = fileStream.read(buffer)) != -1) {
@@ -44,6 +63,34 @@ public class Cliente {
         } catch (IOException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
 
+    public static void main(String[] args) throws InterruptedException, IOException {
+//        try {
+//            Socket s_cliente;
+//            DataOutputStream dados;
+//            String filename = "arquivoParaTransferencia";
+//            s_cliente = new Socket("192.168.0.4", 12345);
+//            dados = new DataOutputStream(s_cliente.getOutputStream());
+//            dados.writeUTF(filename);
+//            Thread.sleep(1000);
+//
+//            s_cliente = new Socket("192.168.0.4", 12345);
+//            dados = new DataOutputStream(s_cliente.getOutputStream());
+//            FileInputStream fileStream = new FileInputStream(filename);
+//            File file = new File(filename);
+//            int length = (int) file.length();
+//            byte[] buffer = new byte[length];
+//            int nBytes;
+//            while ((nBytes = fileStream.read(buffer)) != -1) {
+//                String msgDecode = new String(buffer, "UTF-8");
+//                dados.writeUTF(msgDecode);
+//            }
+//        } catch (IOException ex) {
+//            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        Cliente c = new Cliente();
+        //c.login("Kennedy", "Senha");
+        c.enviarArquivo("Um arquivo pra recordar", "uapr", new File("arquivoParaTransferencia"));
     }
 }
