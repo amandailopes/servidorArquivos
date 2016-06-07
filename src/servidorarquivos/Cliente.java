@@ -37,6 +37,13 @@ public class Cliente {
         }
     }
 
+    public void novoLogin(String login, String Password) {
+        String d[] = new String[2];
+        d[0] = login;
+        d[1] = Password;
+        enviarInfo("2", d);
+    }
+
     public void login(String login, String Password) {
         String d[] = new String[2];
         d[0] = login;
@@ -50,6 +57,7 @@ public class Cliente {
             d[0] = descricao;
             d[1] = palavraChave;
             enviarInfo("2", d);
+
             Socket s_cliente = new Socket(IP, porta);
             DataOutputStream dados = new DataOutputStream(s_cliente.getOutputStream());
             FileInputStream fileStream = new FileInputStream(f.getName());

@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -21,26 +22,55 @@ import java.util.logging.Logger;
  */
 public class Servidor {
 
-    public Servidor() {
+    private ArrayList<usuario> usuarios = new ArrayList<>();
+    private ArrayList<usuario> usuariosLogados = new ArrayList<>();
 
-    }
-
-    public static void main(String[] args) {
-        ServerSocket servidor;
-        DataInputStream dados;
-        try {
-            servidor = new ServerSocket(12345);
-            while (true) {
-                Socket cliente = servidor.accept();
-                dados = new DataInputStream(cliente.getInputStream());
-                //System.out.println("Criando o arquivo: " + dados.readUTF());
-                //File f = new File(dados.readUTF());
-                //cliente = servidor.accept();
-                System.out.println(dados.readUTF());
+    private void receberLogin(String readUTF) {
+        String[] split = readUTF.split(";");
+        String login = split[1];
+        String Senha = split[2];
+        for (usuario u : usuarios) {
+            if (u.login.equals(login) && u.senha.equals(Senha)) {
+                System.out.println(login + "conectado!");
             }
-        } catch (IOException ex) {
-            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
+    public Servidor() throws IOException {
+        ServerSocket servidor;
+        DataInputStream dados;
+        servidor = new ServerSocket(12345);
+
+        usuario padrao = new usuario("Kennedy", "Senha");
+        usuarios.add(padrao);
+
+        while (true) {
+            Socket cliente = servidor.accept();
+            dados = new DataInputStream(cliente.getInputStream());
+            String readUTF = dados.readUTF();
+            String[] split = readUTF.split(";");
+            Integer c = new Integer(split[0]);
+            switch (c) {
+                case 1:
+                    receberLogin(readUTF);
+                    break;
+            }
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+        Servidor s = new Servidor();
+    }
+
+    class usuario {
+
+        protected String login;
+        protected String senha;
+
+        public usuario(String login, String senha) {
+            this.login = login;
+            this.senha = senha;
+        }
+
+    }
 }
